@@ -40,6 +40,14 @@ func InitPayment() *PaymentRequest {
  * 				Cannot pay 5th emi without paying the 4 emi
  *
  *
+ * Conditions served here - assumptions
+ *				-	Payment amount should be greater than or equals to the EMI monthly amount
+ *				-	Can't pay an EMI if it is already paid before
+ *				-	Should pay previous EMI before paying another one. Can't pay 5 EMI without 4 EMI payment
+ *				-	If try to pay full amount at once as Lumpsum, all the emi will be closed.
+ *				-	If trying to pay amount more than full emi cost, then the balance amount should be credit back
+ *					if emi is 250 and paid 300, 50 will be credited back to user account
+ *				-	If paid a lumpsum amount, the extra amount will effect the last emis
  * ---------------------------------------------------------------------------
  */
 func (payment *PaymentRequest) Payment() PaymentResponse {
@@ -71,7 +79,7 @@ func (payment *PaymentRequest) Payment() PaymentResponse {
 		// check the payment already paid
 		if record.PaymentStatus == 1 {
 			PaymentRespoObjec.Status = false
-			PaymentRespoObjec.Error = fmt.Errorf("This EMI has been paid already")
+			PaymentRespoObjec.Error = fmt.Errorf("This EMI has been already paid")
 			return PaymentRespoObjec
 		}
 
@@ -94,7 +102,6 @@ func (payment *PaymentRequest) Payment() PaymentResponse {
 			PaymentRespoObjec.Status = false
 			PaymentRespoObjec.Error = fmt.Errorf("Emi payment amount should be greater than or equals %v", record.EmiAmount)
 			return PaymentRespoObjec
-
 		}
 
 		// check lump sum amound added
@@ -119,7 +126,7 @@ func (payment *PaymentRequest) Payment() PaymentResponse {
 				lumpsum_record.ID = 0 // un initiallize
 
 				emiobjectInstance := app.DB
-				emiobjectInstance = emiobjectInstance.Where("emi_id = ?", emil__id, 0)
+				emiobjectInstance = emiobjectInstance.Where("emi_id = ? AND payment_status = ?", emil__id, 0)
 				emiobjectInstance = emiobjectInstance.Not(map[string]interface{}{"id": loop_updated_ids})
 				emiobjectInstance = emiobjectInstance.Limit(1)
 				emiobjectInstance = emiobjectInstance.Order("id DESC")
@@ -135,7 +142,6 @@ func (payment *PaymentRequest) Payment() PaymentResponse {
 							"added_lumpsum":  1,
 						})
 						extra__lumpsum = extra__lumpsum - lumpsum_record.EmiAmount
-
 						if extra__lumpsum <= 0 {
 							break
 						}
@@ -153,6 +159,17 @@ func (payment *PaymentRequest) Payment() PaymentResponse {
 				}
 
 			}
+
+			// Check extra__lumpsum have some value after paid all the emis
+			// this amount will be deduct from the first record
+			if extra__lumpsum > 0 {
+				app.DB.Model(&models.EmiPaymentDetailLedger{}).Where("id = ?", record.ID).Updates(map[string]interface{}{
+					"emi_paid_amount": gorm.Expr("emi_paid_amount - ?", extra__lumpsum),
+				})
+
+				fmt.Printf("You have paid \033[1;32m%v\033[0m amount more than your emi. This amount will be credited back to your account within 3-7 working days\n", extra__lumpsum)
+			}
+
 		}
 
 		PaymentRespoObjec.Status = true

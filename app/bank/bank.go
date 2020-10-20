@@ -1,6 +1,7 @@
 package bank
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 	"the_ledger_co/app"
@@ -26,7 +27,7 @@ type Loan struct {
  * ----------------------------------------------------------------------------
  */
 func InitLoan() *Loan {
-	// models.AutoMigrateModel()
+	models.AutoMigrateModel()
 	return &Loan{}
 }
 
@@ -48,6 +49,16 @@ func (loan *Loan) BorrowLoan() (error, *Loan) {
 
 	_emiid := loan.GenerateEMIID()
 
+	//check the entry already exists
+	var result []models.LoanDetailsLedger
+	objectInstance := app.DB
+	objectInstance = objectInstance.Model(&models.LoanDetailsLedger{})
+	objectInstance = objectInstance.Where("bank_name = ? AND borrower_name = ?", loan.BankName, loan.BorrowerName)
+	objectInstance = objectInstance.Find(&result)
+
+	if len(result) > 0 {
+		return fmt.Errorf("You already have an approved loan from this bank."), loan
+	}
 	// Create
 	app.DB.Create(&models.LoanDetailsLedger{
 		BankName:        loan.BankName,

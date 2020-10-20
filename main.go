@@ -116,11 +116,11 @@ func _process_loan() error {
 		fmt.Printf("\033[1;32m%s\033[0m \n", " Your Loan has been approved")
 
 		fmt.Println("-------------- Loan Details -------------------------")
-		fmt.Println("BankName : ", loan_data.BankName)
-		fmt.Println("BorrowerName : ", loan_data.BorrowerName)
-		fmt.Println("PrincipalAmount : ", loan_data.PrincipalAmount)
-		fmt.Println("NoOfYears : ", loan_data.NoOfYears)
-		fmt.Println("RateOfInterest : ", loan_data.RateOfInterest)
+		fmt.Println("Bank Name : ", loan_data.BankName)
+		fmt.Println("Borrower Name : ", loan_data.BorrowerName)
+		fmt.Println("Principal Amount : ", loan_data.PrincipalAmount)
+		fmt.Println("No Of Years : ", loan_data.NoOfYears)
+		fmt.Println("Rate Of Interest : ", loan_data.RateOfInterest)
 
 		fmt.Println("-------------- EMI Details  -------------------------")
 		fmt.Println("Total Repay : ", loan_data.TotalRepay)
@@ -186,5 +186,6 @@ func _process_balance() error {
 	return nil
 }
 
-// go run main.go LOAN IDIDI bank 1000 2 2
+// go run main.go LOAN IDIDI bank 1000 1 2
 // go run main.go PAYMENT IDIDI bank 1000 5
+// go run main.go BALANCE IDIDI bank 0
