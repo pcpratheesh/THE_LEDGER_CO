@@ -26,7 +26,8 @@ func InitApp() *App {
 		"Port":     os.Getenv("Port"),
 	})
 	connObje.DBConnection() // Initiate a db connection with app
-	models.AutoMigrateModel(connObje.DB)
+
+	models.AutoMigrateModel(connObje.DB) // Migrate model changes
 
 	return &connObje
 }

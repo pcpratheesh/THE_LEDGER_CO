@@ -37,7 +37,7 @@ func InitLoan() *Loan {
  * Steps :
  *
  *	Generate a random EMI ID
- *	Check the loan details already exists with the bank name and borrower id
+ *	Check the loan details already exists with the bank name and borrower name
  * 	Add new entry to ledger
  *	Calculate the Monthly EMI
  *
