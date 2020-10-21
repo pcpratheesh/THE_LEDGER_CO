@@ -60,26 +60,25 @@ func _process_loan() error {
 	if len(os.Args) < 7 {
 		return fmt.Errorf("insufficient parameters")
 	}
+	principal_converted_val, _ := strconv.ParseFloat(os.Args[4], 64)
+	no_of_years_converted_val, _ := strconv.Atoi(os.Args[5])
+	rate_of_converted_val, _ := strconv.ParseFloat(os.Args[6], 64)
 
-	loan := bank.InitLoan()
-	loan.BankName = os.Args[2]
-	loan.BorrowerName = os.Args[3]
-
-	val, _ := strconv.ParseFloat(os.Args[4], 64)
-	loan.PrincipalAmount = val
-
-	valI, _ := strconv.Atoi(os.Args[5])
-	loan.NoOfYears = valI
-
-	valF, _ := strconv.ParseFloat(os.Args[6], 64)
-	loan.RateOfInterest = valF
-
+	loan := &bank.Loan{
+		BankName:        os.Args[2],
+		BorrowerName:    os.Args[3],
+		PrincipalAmount: principal_converted_val,
+		NoOfYears:       no_of_years_converted_val,
+		RateOfInterest:  rate_of_converted_val,
+	}
 	err, loan_data := loan.BorrowLoan()
 
 	if err != nil {
 		fmt.Printf("\033[1;31m%s\033[0m \n", err)
 	} else {
-
+		//
+		// Render the content
+		//
 		fmt.Println("| ----------------------------------------------------")
 		fmt.Printf("| \t\t \033[1;32m%s\033[0m \n", " Your Loan has been approved")
 		fmt.Printf("| \033[1;31m%s\033[0m \n", "Loan Details")
@@ -110,20 +109,19 @@ func _process_payment() error {
 	if len(os.Args) < 6 {
 		return fmt.Errorf("insufficient parameters")
 	}
+	lupmsump_converted_val, _ := strconv.ParseFloat(os.Args[4], 64)
+	emi_converted_val, _ := strconv.Atoi(os.Args[5])
 
-	payment := bank.InitPayment()
-	payment.BankName = os.Args[2]
-	payment.BorrowerName = os.Args[3]
-
-	valF, _ := strconv.ParseFloat(os.Args[4], 64)
-	payment.LumpSumAmount = valF
-
-	valI, _ := strconv.Atoi(os.Args[5])
-	payment.EmiNumber = valI
-
+	payment := &bank.PaymentRequest{
+		BankName:      os.Args[2],
+		BorrowerName:  os.Args[3],
+		LumpSumAmount: lupmsump_converted_val,
+		EmiNumber:     emi_converted_val,
+	}
 	response_payment := payment.Payment()
+
 	if response_payment.Status == true {
-		fmt.Printf("\033[1;32m%s\033[0m \n", " Your Loan payment been trasnfered successfully.")
+		fmt.Printf("\033[1;32m%s\033[0m \n", " Your Loan payment been transfered successfully.")
 	} else {
 		fmt.Printf("\033[1;31m%s\033[0m \n", response_payment.Error)
 	}
@@ -139,15 +137,14 @@ func _process_balance() error {
 	if len(os.Args) < 5 {
 		return fmt.Errorf("insufficient parameters")
 	}
+	converted_emi_val, _ := strconv.Atoi(os.Args[4])
 
-	bl := bank.InitBalance()
-	bl.BankName = os.Args[2]
-	bl.BorrowerName = os.Args[3]
-
-	valI, _ := strconv.Atoi(os.Args[4])
-	bl.EmiNumber = valI
-
-	response := bl.Balance()
+	balanceObj := &bank.BalanceRequest{
+		BankName:     os.Args[2],
+		BorrowerName: os.Args[3],
+		EmiNumber:    converted_emi_val,
+	}
+	response := balanceObj.Balance()
 
 	if response.Status == true {
 		fmt.Println(response.BankName, response.BorrowerName, response.AmountPaid, response.NoOfEmiLeft)
