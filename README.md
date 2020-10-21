@@ -19,6 +19,21 @@ You can change db connection details in .env file
 
 Domine : valid config value mysql, sqlite
 
+## EMI
+Emi has been calculated by simple interest rate
+**SI = P * R * T/100**
+
+SI	Simple Interest
+R	Rate of interest
+T	Time
+P	Principal Amount
+
+
+The formula for calculating EMI using interest rate is:
+
+**EMI = (Principal + Interest)/Period in Months**
+
+
 ## Execution
 
 ./main LOAN IDIDI bank 1000 1 2
@@ -26,3 +41,30 @@ Domine : valid config value mysql, sqlite
 ./main PAYMENT IDIDI bank 1000 5
 
 ./main BALANCE IDIDI bank 0
+
+
+
+## Assumptions and conditions added with Commands
+
+### Balance
+- It prints the total amount paid by the borrower, including all the Lump Sum amounts paid including that EMI number, and the no of EMIs remaining.
+- Only print Active emi payments
+  
+  for example : 
+    
+    If IDIDI have **12** month emi payment with **85** as EMI amount. He have 12 active EMIs. On 1st payment he pays **170**. He payed **85** more as lumpsum. 
+    Thus the extra paid **85** has been deducted from last emi and that EMI will be marked as fully paid.
+
+    So that the user have 10 active emi's remain to pay
+
+
+### Payment
+- EMIS can paid only one by one
+- Can't pay 4th emi without 3rd emi payment
+- Checking the emi already paid for a particular month
+- Payment Amount should be greaterthan or equals to the EMI monthly amount
+- If pay more than loan amount, remaining balance amount should be credit back to the user
+
+
+### Loan
+- Can't request multiple loan with the same bank and borrower name without completing all the emi payments.

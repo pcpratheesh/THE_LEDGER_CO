@@ -52,6 +52,7 @@ func (bl *BalanceRequest) Balance() BalanceResponse {
 	var emi__paid float64
 	var record__length int
 	var total_emis int
+	var total_paid_emis int
 	var BalanceRespoObjec BalanceResponse
 
 	app := app.InitApp()
@@ -67,7 +68,10 @@ func (bl *BalanceRequest) Balance() BalanceResponse {
 
 		// find total no of emis
 		app.DB.Table("emi_payment_detail_ledgers").Select("count(id)").Where("emi_id = ? ", emil__id).Row().Scan(&total_emis)
-		emis_left := total_emis - bl.EmiNumber
+
+		// find total no of emis
+		app.DB.Table("emi_payment_detail_ledgers").Select("count(id)").Where("emi_id = ? AND payment_status = ? ", emil__id, 1).Row().Scan(&total_paid_emis)
+		emis_left := total_emis - total_paid_emis - bl.EmiNumber
 
 		// if inpu is greater than no of emis
 		if emis_left < 0 {

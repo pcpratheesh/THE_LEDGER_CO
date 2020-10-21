@@ -154,5 +154,5 @@ func _process_balance() error {
 
 // go run main.go LOAN IDIDI bank 1000 1 2
 // go run main.go LOAN IDIDI Dale 10000 1 1.2
-// go run main.go PAYMENT IDIDI bank 1000 5
+// go run main.go PAYMENT IDIDI bank 170 1
 // go run main.go BALANCE IDIDI bank 0

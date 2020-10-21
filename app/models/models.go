@@ -11,6 +11,7 @@ type LoanDetailsLedger struct {
 	NoOfYears       int
 	RateOfInterest  float64
 	EmiId           string
+	Closed          int `gorm:"default:0"`
 }
 
 type EmiPaymentDetailLedger struct {
