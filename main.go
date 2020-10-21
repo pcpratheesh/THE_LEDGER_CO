@@ -79,19 +79,24 @@ func _process_loan() error {
 	if err != nil {
 		fmt.Printf("\033[1;31m%s\033[0m \n", err)
 	} else {
-		fmt.Printf("\033[1;32m%s\033[0m \n", " Your Loan has been approved")
 
-		fmt.Println("-------------- Loan Details -------------------------")
-		fmt.Println("Bank Name : ", loan_data.BankName)
-		fmt.Println("Borrower Name : ", loan_data.BorrowerName)
-		fmt.Println("Principal Amount : ", loan_data.PrincipalAmount)
-		fmt.Println("No Of Years : ", loan_data.NoOfYears)
-		fmt.Println("Rate Of Interest : ", loan_data.RateOfInterest)
+		fmt.Println("| ----------------------------------------------------")
+		fmt.Printf("| \t\t \033[1;32m%s\033[0m \n", " Your Loan has been approved")
+		fmt.Printf("| \033[1;31m%s\033[0m \n", "Loan Details")
+		fmt.Println("| ----------------------------------------------------")
+		fmt.Println("| Bank Name : ", loan_data.BankName)
+		fmt.Println("| Borrower Name : ", loan_data.BorrowerName)
+		fmt.Println("| Principal Amount : ", loan_data.PrincipalAmount)
+		fmt.Println("| No Of Years : ", loan_data.NoOfYears)
+		fmt.Println("| Rate Of Interest : ", loan_data.RateOfInterest)
 
-		fmt.Println("-------------- EMI Details  -------------------------")
-		fmt.Println("Total Repay : ", loan_data.TotalRepay)
-		fmt.Println("Total Emis : ", loan_data.NoOfEmis)
-		fmt.Println("Monthly Payment : ", loan_data.MonthlyEmi)
+		fmt.Println("| ----------------------------------------------------")
+		fmt.Printf("| \033[1;31m%s\033[0m \n", "EMI Details")
+		fmt.Println("| ----------------------------------------------------")
+		fmt.Println("| Total Repay : ", loan_data.TotalRepay)
+		fmt.Println("| Total Emis : ", loan_data.NoOfEmis)
+		fmt.Println("| Monthly Payment : ", loan_data.MonthlyEmi)
+		fmt.Println("| ----------------------------------------------------")
 	}
 	return nil
 }
@@ -118,6 +123,7 @@ func _process_payment() error {
 
 	response_payment := payment.Payment()
 	if response_payment.Status == true {
+		fmt.Printf("\033[1;32m%s\033[0m \n", " Your Loan payment been trasnfered successfully.")
 	} else {
 		fmt.Printf("\033[1;31m%s\033[0m \n", response_payment.Error)
 	}
