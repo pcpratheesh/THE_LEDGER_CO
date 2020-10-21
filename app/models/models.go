@@ -1,6 +1,8 @@
 package models
 
-import "the_ledger_co/app"
+import (
+	"gorm.io/gorm"
+)
 
 // Initiate Models
 type LoanDetailsLedger struct {
@@ -26,8 +28,7 @@ type EmiPaymentDetailLedger struct {
 	AddedLumpsum  int `gorm:"default:0"`
 }
 
-func AutoMigrateModel() {
-	app := app.InitApp()
-	app.DB.AutoMigrate(&LoanDetailsLedger{})
-	app.DB.AutoMigrate(&EmiPaymentDetailLedger{})
+func AutoMigrateModel(DBC *gorm.DB) {
+	DBC.AutoMigrate(&LoanDetailsLedger{})
+	DBC.AutoMigrate(&EmiPaymentDetailLedger{})
 }

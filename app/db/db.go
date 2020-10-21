@@ -40,6 +40,7 @@ func (db *DBConn) LoadConfig(configVal map[string]string) {
  * -------------------------------------------------------------------------------
  */
 func (db *DBConn) DBConnection() {
+
 	var connectiondb *gorm.DB
 	var err error
 

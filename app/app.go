@@ -3,6 +3,7 @@ package app
 import (
 	"os"
 	"the_ledger_co/app/db"
+	"the_ledger_co/app/models"
 
 	"github.com/joho/godotenv"
 )
@@ -14,6 +15,7 @@ type App struct {
 func InitApp() *App {
 	connObje := App{}
 	godotenv.Load()
+	//initiate models
 
 	connObje.LoadConfig(map[string]string{
 		"Host":     os.Getenv("Host"),
@@ -24,6 +26,7 @@ func InitApp() *App {
 		"Port":     os.Getenv("Port"),
 	})
 	connObje.DBConnection() // Initiate a db connection with app
+	models.AutoMigrateModel(connObje.DB)
 
 	return &connObje
 }

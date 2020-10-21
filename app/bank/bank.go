@@ -27,7 +27,6 @@ type Loan struct {
  * ----------------------------------------------------------------------------
  */
 func InitLoan() *Loan {
-	models.AutoMigrateModel()
 	return &Loan{}
 }
 

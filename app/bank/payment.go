@@ -22,7 +22,6 @@ type PaymentResponse struct {
 }
 
 func InitPayment() *PaymentRequest {
-	models.AutoMigrateModel()
 	return &PaymentRequest{}
 }
 
