@@ -23,10 +23,10 @@ Domine : valid config value mysql, sqlite
 Emi has been calculated by simple interest rate
 **SI = P * R * T/100**
 
-SI	Simple Interest
-R	Rate of interest
-T	Time
-P	Principal Amount
+* **SI** Simple Interest
+* **R**	 Rate of interest
+* **T**	 Time
+* **P**	 Principal Amount
 
 
 The formula for calculating EMI using interest rate is:
