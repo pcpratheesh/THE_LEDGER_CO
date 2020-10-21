@@ -66,6 +66,8 @@ The formula for calculating EMI using interest rate is:
 ## Execution
 
 ./main LOAN IDIDI bank 1000 1 2
+
 ./main PAYMENT IDIDI bank 1000 5
+
 ./main BALANCE IDIDI bank 0
 
