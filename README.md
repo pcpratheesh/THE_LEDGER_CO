@@ -21,8 +21,8 @@ Domine : valid config value mysql, sqlite
 
 ## Execution
 
-go run main.go LOAN IDIDI bank 1000 1 2
+./main LOAN IDIDI bank 1000 1 2
 
-go run main.go PAYMENT IDIDI bank 1000 5
+./main PAYMENT IDIDI bank 1000 5
 
-go run main.go BALANCE IDIDI bank 0
+./main BALANCE IDIDI bank 0

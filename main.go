@@ -7,40 +7,6 @@ import (
 	"the_ledger_co/app/bank"
 )
 
-func main__() {
-	// loan := bank.InitLoan()
-	// loan.BankName = "MDB"
-	// loan.BorrowerName = "Dale"
-	// loan.PrincipalAmount = 10000
-	// loan.NoOfYears = 1
-	// loan.RateOfInterest = 2
-
-	// _, _ = loan.BorrowLoan()
-
-	// fetch abalance
-	bl := bank.InitBalance()
-	bl.BankName = "MDB"
-	bl.BorrowerName = "Dale"
-	bl.EmiNumber = 4
-
-	response := bl.Balance()
-
-	if response.Status == true {
-		fmt.Println(response.BankName, response.BorrowerName, response.AmountPaid, response.NoOfEmiLeft)
-	} else {
-		fmt.Printf("\033[1;31m%s\033[0m \n", response.Error)
-	}
-
-	// payment
-	// payment := bank.InitPayment()
-	// payment.BankName = "MDB"
-	// payment.BorrowerName = "Dale"
-	// payment.EmiNumber = 0
-	// payment.LumpSumAmount = 3000
-
-	// response_payment := payment.Payment()
-	// fmt.Println(response_payment)
-}
 func main() {
 
 	err := ProcessCommands()
@@ -79,7 +45,7 @@ func ProcessCommands() error {
 			return _process_balance()
 		}
 	} else {
-
+		return fmt.Errorf("Should provide commands")
 	}
 
 	return nil
@@ -105,8 +71,8 @@ func _process_loan() error {
 	valI, _ := strconv.Atoi(os.Args[5])
 	loan.NoOfYears = valI
 
-	valI, _ = strconv.Atoi(os.Args[6])
-	loan.RateOfInterest = valI
+	valF, _ := strconv.ParseFloat(os.Args[6], 64)
+	loan.RateOfInterest = valF
 
 	err, loan_data := loan.BorrowLoan()
 
@@ -187,5 +153,6 @@ func _process_balance() error {
 }
 
 // go run main.go LOAN IDIDI bank 1000 1 2
+// go run main.go LOAN IDIDI Dale 10000 1 1.2
 // go run main.go PAYMENT IDIDI bank 1000 5
 // go run main.go BALANCE IDIDI bank 0

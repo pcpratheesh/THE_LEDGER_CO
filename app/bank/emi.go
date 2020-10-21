@@ -48,7 +48,6 @@ func InitBalance() *BalanceRequest {
  * ----------------------------------------------------------------------------
  */
 func (bl *BalanceRequest) Balance() BalanceResponse {
-	//get the record of borrower detail
 	result := map[string]interface{}{}
 	var emi__paid float64
 	var record__length int
@@ -57,6 +56,7 @@ func (bl *BalanceRequest) Balance() BalanceResponse {
 
 	app := app.InitApp()
 
+	//get the record of borrower detail
 	objectInstance := app.DB
 	objectInstance = objectInstance.Model(&models.LoanDetailsLedger{})
 	objectInstance = objectInstance.Where("bank_name = ? AND borrower_name = ?", bl.BankName, bl.BorrowerName)
@@ -67,6 +67,14 @@ func (bl *BalanceRequest) Balance() BalanceResponse {
 
 		// find total no of emis
 		app.DB.Table("emi_payment_detail_ledgers").Select("count(id)").Where("emi_id = ? ", emil__id).Row().Scan(&total_emis)
+		emis_left := total_emis - bl.EmiNumber
+
+		// if inpu is greater than no of emis
+		if emis_left < 0 {
+			BalanceRespoObjec.Status = false
+			BalanceRespoObjec.Error = fmt.Errorf("Invalid emi number")
+			return BalanceRespoObjec
+		}
 
 		var records []models.EmiPaymentDetailLedger
 
@@ -89,7 +97,8 @@ func (bl *BalanceRequest) Balance() BalanceResponse {
 		BalanceRespoObjec.BorrowerName = bl.BorrowerName
 		BalanceRespoObjec.EmiNumber = bl.EmiNumber
 		BalanceRespoObjec.AmountPaid = emi__paid
-		BalanceRespoObjec.NoOfEmiLeft = total_emis - bl.EmiNumber
+		BalanceRespoObjec.NoOfEmiLeft = emis_left
+
 	} else {
 		BalanceRespoObjec.Status = false
 		BalanceRespoObjec.Error = fmt.Errorf("Unable to find loan details of user with bank name")

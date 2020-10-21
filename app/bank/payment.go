@@ -93,7 +93,7 @@ func (payment *PaymentRequest) Payment() PaymentResponse {
 
 		if len(pendingrecord) > 0 {
 			PaymentRespoObjec.Status = false
-			PaymentRespoObjec.Error = fmt.Errorf("There exists an unpaid emi of previous month. Please pay")
+			PaymentRespoObjec.Error = fmt.Errorf("There exists an unpaid emi of previous month. Try after paying the pending EMI.")
 			return PaymentRespoObjec
 		}
 

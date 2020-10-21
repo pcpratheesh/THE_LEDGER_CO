@@ -14,7 +14,7 @@ type Loan struct {
 	BorrowerName    string
 	PrincipalAmount float64
 	NoOfYears       int
-	RateOfInterest  int
+	RateOfInterest  float64
 	EmiId           string
 	TotalRepay      float64
 	NoOfEmis        int
@@ -97,7 +97,7 @@ func (loan *Loan) CalculateEMI(app *app.App) {
 
 	//calculate the interest
 	// i = P*N*R
-	_intrest := _princ_amount * float64(_no_of_years) * float64(_rate_of_interest)
+	_intrest := _princ_amount * float64(_no_of_years) * float64(_rate_of_interest/100)
 	_total_return := _intrest + _princ_amount
 
 	_emi_total_months := (_no_of_years * 12) //find the no of months to pay

@@ -9,7 +9,7 @@ type LoanDetailsLedger struct {
 	BorrowerName    string
 	PrincipalAmount float64
 	NoOfYears       int
-	RateOfInterest  int
+	RateOfInterest  float64
 	EmiId           string
 }
 
