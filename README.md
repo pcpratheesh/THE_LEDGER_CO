@@ -34,15 +34,6 @@ The formula for calculating EMI using interest rate is:
 **EMI = (Principal + Interest)/Period in Months**
 
 
-## Execution
-
-./main LOAN IDIDI bank 1000 1 2
-
-./main PAYMENT IDIDI bank 1000 5
-
-./main BALANCE IDIDI bank 0
-
-
 
 ## Assumptions and conditions added with Commands
 
@@ -68,3 +59,13 @@ The formula for calculating EMI using interest rate is:
 
 ### Loan
 - Can't request multiple loan with the same bank and borrower name without completing all the emi payments.
+
+
+
+
+## Execution
+
+./main LOAN IDIDI bank 1000 1 2
+./main PAYMENT IDIDI bank 1000 5
+./main BALANCE IDIDI bank 0
+
